@@ -1,7 +1,7 @@
 import { SALT } from '#Constants/salt.js';
 import UserModel from '#Schemas/user.schema.js';
 import { hash } from 'bcrypt';
-
+import createResponse from '#Domain/response.js';
 const userRegisterController = async (req, res) => {
     const { _id, name, surname, email, password } = req.body;
 
@@ -9,14 +9,14 @@ const userRegisterController = async (req, res) => {
     if (existingUserById)
         return res
             .status(409)
-            .send({ errors: ['Ya existe un usuario con ese id registrado'] });
+            .send({ errors: ['user_already_exists'] });
 
     const existingUserByEmail = await UserModel.findOne({ email }).exec();
     if (existingUserByEmail)
         return res
             .status(409)
             .send({
-                errors: ['Ya existe un usuario con ese email registrado'],
+                errors: ['user_already_exists'],
             });
 
     const hashedPassword = await hash(password, SALT);
@@ -30,7 +30,8 @@ const userRegisterController = async (req, res) => {
 
     await user.save();
 
-    return res.status(201).send('Usuario registrado con éxito');
+    
+    return res.status(201).send(createResponse(201, 'user_created'));
 };
 
 export default userRegisterController;

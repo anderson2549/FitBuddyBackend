@@ -1,16 +1,18 @@
-import { passwordDTOSchema } from '#Dto/dto-types.js';
+import { nameDTOSchema, surnameDTOSchema ,languageDTO} from '#Dto/dto-types.js';
 import { Type } from '@sinclair/typebox';
 import Ajv from 'ajv';
 import addErrors from 'ajv-errors';
 
-const UnregisterDTOSchema = Type.Object(
+const UpdateDataDTOSchema = Type.Object(
     {
-        password: passwordDTOSchema,
+        name: nameDTOSchema,
+        surname: surnameDTOSchema,
+        language: languageDTO,
     },
     {
         additionalProperties: false,
         errorMessage: {
-            additionalProperties: 'El formato del objeto no es válido',
+            additionalProperties: 'format_object_invalid',
         },
     }
 );
@@ -18,13 +20,11 @@ const UnregisterDTOSchema = Type.Object(
 const ajv = new Ajv({ allErrors: true })
     .addKeyword('kind')
     .addKeyword('modifier');
-
-ajv.addFormat('password', /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/);
 addErrors(ajv);
 
-const validateSchema = ajv.compile(UnregisterDTOSchema);
+const validateSchema = ajv.compile(UpdateDataDTOSchema);
 
-const userUnregisterDTO = (req, res, next) => {
+const userUpdateDataDTO = (req, res, next) => {
     const isDTOValid = validateSchema(req.body);
 
     if (!isDTOValid)
@@ -35,4 +35,4 @@ const userUnregisterDTO = (req, res, next) => {
     next();
 };
 
-export default userUnregisterDTO;
+export default userUpdateDataDTO;

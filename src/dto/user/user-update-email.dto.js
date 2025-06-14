@@ -1,17 +1,18 @@
-import { passwordDTOSchema } from '#Dto/dto-types.js';
+import { emailDTOSchema, passwordDTOSchema } from '#Dto/dto-types.js';
 import { Type } from '@sinclair/typebox';
 import Ajv from 'ajv';
 import addErrors from 'ajv-errors';
+import addFormats from 'ajv-formats';
 
-const UpdatePasswordDTOSchema = Type.Object(
+const UpdateEmailDTOSchema = Type.Object(
     {
-        oldPassword: passwordDTOSchema,
-        newPassword: passwordDTOSchema,
+        email: emailDTOSchema,
+        password: passwordDTOSchema,
     },
     {
         additionalProperties: false,
         errorMessage: {
-            additionalProperties: 'El formato del objeto no es válido',
+            additionalProperties: 'format_object_invalid',
         },
     }
 );
@@ -21,11 +22,12 @@ const ajv = new Ajv({ allErrors: true })
     .addKeyword('modifier');
 
 ajv.addFormat('password', /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/);
+addFormats(ajv, ['email']);
 addErrors(ajv);
 
-const validateSchema = ajv.compile(UpdatePasswordDTOSchema);
+const validateSchema = ajv.compile(UpdateEmailDTOSchema);
 
-const userUpdatePasswordDTO = (req, res, next) => {
+const userUpdateEmailDTO = (req, res, next) => {
     const isDTOValid = validateSchema(req.body);
 
     if (!isDTOValid)
@@ -36,4 +38,4 @@ const userUpdatePasswordDTO = (req, res, next) => {
     next();
 };
 
-export default userUpdatePasswordDTO;
+export default userUpdateEmailDTO;

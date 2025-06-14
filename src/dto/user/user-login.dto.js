@@ -12,7 +12,7 @@ const LoginDTOSchema = Type.Object(
     {
         additionalProperties: false,
         errorMessage: {
-            additionalProperties: 'El formato del objeto no es válido',
+            additionalProperties: 'format_object_invalid',
         },
     }
 );

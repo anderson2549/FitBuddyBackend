@@ -1,3 +1,6 @@
+// Este archivo define los tipos de datos utilizados en los DTOs (Data Transfer Objects) del proyecto.
+// Lenguaje: JavaScript
+
 import { Type } from '@sinclair/typebox';
 
 export const idDTOSchema = Type.String({
@@ -45,3 +48,10 @@ export const passwordDTOSchema = Type.String({
         maxLength: 'password debe tener como máximo 25 caracteres de longitud',
     },
 });
+
+// DTO para validar un campo de idioma que solo permite los valores 'ES' o 'EN'.
+export const languageDTO = {
+    type: 'string',
+    enum: ['ES', 'EN'],
+    description: 'Idioma permitido: ES (Español) o EN (Inglés)',
+};

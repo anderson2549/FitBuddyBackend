@@ -3,7 +3,7 @@ import {
     idDTOSchema,
     nameDTOSchema,
     passwordDTOSchema,
-    surnameDTOSchema,
+    surnameDTOSchema,languageDTO
 } from '#Dto/dto-types.js';
 import { Type } from '@sinclair/typebox';
 import Ajv from 'ajv';
@@ -17,11 +17,12 @@ const RegisterDTOSchema = Type.Object(
         surname: surnameDTOSchema,
         email: emailDTOSchema,
         password: passwordDTOSchema,
+        language: languageDTO,
     },
     {
         additionalProperties: false,
         errorMessage: {
-            additionalProperties: 'El formato del objeto no es válido',
+            additionalProperties: 'format_object_invalid',
         },
     }
 );
